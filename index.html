@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Gallery</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f8f8f8;
+      }
+      @keyframes gradientAnimation {
+  0% { background: linear-gradient(45deg, #b3e7a9, #d8cdca); }
+  25% { background: linear-gradient(45deg, #eca5a5, #a6c1ee); }
+  50% { background: linear-gradient(45deg, #8fd3f4, #84fab0); }
+  75% { background: linear-gradient(45deg, #a1c4fd, #c2e9fb); }
+  100% { background: linear-gradient(45deg, #93c4c1, #c9ec49); }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-size: cover;
+  animation: gradientAnimation 5s infinite linear;
+}
+
+
+      header {
+        background-color: #2874f0;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      header .logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      header .search-bar {
+        display: flex;
+        flex: 1;
+        margin: 0 20px;
+      }
+
+      header .search-bar input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 4px;
+        border: none;
+        outline: none;
+      }
+
+      header .links a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 16px;
+      }
+
+      table {
+        margin-bottom: 20px;
+      }
+
+      table td {
+        padding: 5px;
+      }
+
+      #container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        width: 200px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      .card h3 {
+        font-size: 18px;
+        margin: 10px 0 5px;
+        color: #333;
+      }
+
+      .card p {
+        font-size: 14px;
+        color: #2874f0;
+        font-weight: bold;
+      }
+
+      .filter {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .filter button {
+        padding: 10px 15px;
+        font-size: 16px;
+        margin-right: 10px;
+        border: none;
+        background-color: #2874f0;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .filter button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f8f8f8;
+      }
+      .card button {
+        padding: 8px 12px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .card .edit-button {
+        background-color: #fcdea6;
+        color: white;
+      }
+      .card .delete-button {
+        background-color: #ff4d4d;
+        color: white;
+      }
+    </style>
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="logo">Flipkart</div>
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Search for products, brands, and more..."
+        />
+      </div>
+
+      <div class="links">
+        <a href="#">Login</a>
+        <a href="#">Sign Up</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </header>
+
+    <!-- Price Filter Section -->
+    <div class="filter">
+      <button id="low">Low to High</button>
+      <button id="high">High to Low</button>
+    </div>
+
+    <!-- Product Add Section -->
+    <table>
+      <tr>
+        <td><label>Select Image</label></td>
+        <td><input type="file" id="img" /></td>
+      </tr>
+      <tr>
+        <td><label>Enter Product Name</label></td>
+        <td><input type="text" id="name" /></td>
+      </tr>
+      <tr>
+        <td><label>Enter Price</label></td>
+        <td><input type="number" id="price" step="0.01" /></td>
+      </tr>
+      <tr>
+        <td><button id="btn">Submit</button></td>
+      </tr>
+    </table>
+
+ 
+    <div id="container"></div>
+<!-- 
+    <script>
+      let todo = JSON.parse(localStorage.getItem("name")) || [];
+      let priceList = JSON.parse(localStorage.getItem("price")) || [];
+      let imgList = JSON.parse(localStorage.getItem("img")) || [];
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let name = document.getElementById("name");
+      let price = document.getElementById("price");
+      let img = document.getElementById("img");
+      let btn = document.getElementById("btn");
+      let container = document.getElementById("container");
+      let searchBar = document.querySelector(".search-bar input");
+      let lowButton = document.getElementById("low");
+      let highButton = document.getElementById("high");
+
+      btn.addEventListener("click", () => {
+        if (name.value === "" || price.value === "" || !img.files[0]) {
+          alert("Please enter all fields");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          todo.push(name.value);
+          priceList.push(price.value);
+          imgList.push(reader.result);
+
+          localStorage.setItem("name", JSON.stringify(todo));
+          localStorage.setItem("price", JSON.stringify(priceList));
+          localStorage.setItem("img", JSON.stringify(imgList));
+
+          showdata();
+          name.value = "";
+          price.value = "";
+          img.value = "";
+        };
+        reader.readAsDataURL(img.files[0]);
+      });
+
+      function showdata(filter = "", sortOrder = "") {
+        container.innerHTML = "";
+        let filteredData = todo.filter((element, index) => {
+          if (filter && !element.toLowerCase().includes(filter.toLowerCase())) {
+            return false;
+          }
+          return true;
+        });
+
+        let sortedData = [...filteredData];
+
+        if (sortOrder === "asc") {
+          sortedData.sort(
+            (a, b) => priceList[todo.indexOf(a)] - priceList[todo.indexOf(b)]
+          );
+        } else if (sortOrder === "desc") {
+          sortedData.sort(
+            (a, b) => priceList[todo.indexOf(b)] - priceList[todo.indexOf(a)]
+          );
+        }
+
+        sortedData.forEach((element, index) => {
+          let card = document.createElement("div");
+          card.className = "card";
+
+          let image = document.createElement("img");
+          image.src = imgList[todo.indexOf(element)];
+
+          let productName = document.createElement("h3");
+          productName.textContent = element;
+
+          let productPriceElement = document.createElement("p");
+          productPriceElement.textContent = `₹${
+            priceList[todo.indexOf(element)]
+          }`;
+
+          card.append(image, productName, productPriceElement);
+          container.appendChild(card);
+
+          card.addEventListener("click", () => {
+            cart.push({
+              name: element,
+              price: priceList[todo.indexOf(element)],
+              img: imgList[todo.indexOf(element)],
+            });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            alert("Product added to cart!");
+          });
+        });
+      }
+
+      searchBar.addEventListener("input", (e) => {
+        showdata(e.target.value);
+      });
+
+      lowButton.addEventListener("click", () => {
+        showdata(searchBar.value, "asc");
+      });
+
+      highButton.addEventListener("click", () => {
+        showdata(searchBar.value, "desc");
+      });
+
+      showdata();
+    </script>  -->
+
+    <script>
+      let todo = JSON.parse(localStorage.getItem("name")) || [];
+      let priceList = JSON.parse(localStorage.getItem("price")) || [];
+      let imgList = JSON.parse(localStorage.getItem("img")) || [];
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let name = document.getElementById("name");
+      let price = document.getElementById("price");
+      let img = document.getElementById("img");
+      let btn = document.getElementById("btn");
+      let container = document.getElementById("container");
+      let searchBar = document.querySelector(".search-bar input");
+      let lowButton = document.getElementById("low");
+      let highButton = document.getElementById("high");
+      let editIndex = -1; // To track the index of the item being edited
+    
+      btn.addEventListener("click", () => {
+        if (name.value === "" || price.value === "" || (!img.files[0] && editIndex === -1)) {
+          alert("Please enter all fields");
+          return;
+        }
+    
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (editIndex === -1) {
+            // Adding new product
+            todo.push(name.value);
+            priceList.push(price.value);
+            imgList.push(reader.result);
+          } else {
+            // Editing existing product
+            todo[editIndex] = name.value;
+            priceList[editIndex] = price.value;
+            if (img.files[0]) imgList[editIndex] = reader.result;
+            editIndex = -1;
+          }
+    
+          localStorage.setItem("name", JSON.stringify(todo));
+          localStorage.setItem("price", JSON.stringify(priceList));
+          localStorage.setItem("img", JSON.stringify(imgList));
+    
+          showdata();
+          name.value = "";
+          price.value = "";
+          img.value = "";
+        };
+    
+        if (img.files[0]) {
+          reader.readAsDataURL(img.files[0]);
+        } else {
+          reader.onload();
+        }
+      });
+    
+      function showdata(filter = "", sortOrder = "") {
+        container.innerHTML = "";
+        let filteredData = todo.filter((element, index) => {
+          if (filter && !element.toLowerCase().includes(filter.toLowerCase())) {
+            return false;
+          }
+          return true;
+        });
+    
+        let sortedData = [...filteredData];
+    
+        if (sortOrder === "asc") {
+          sortedData.sort((a, b) => priceList[todo.indexOf(a)] - priceList[todo.indexOf(b)]);
+        } else if (sortOrder === "desc") {
+          sortedData.sort((a, b) => priceList[todo.indexOf(b)] - priceList[todo.indexOf(a)]);
+        }
+    
+        sortedData.forEach((element, index) => {
+          let card = document.createElement("div");
+          card.className = "card";
+    
+          let image = document.createElement("img");
+          image.src = imgList[todo.indexOf(element)];
+    
+          let productName = document.createElement("h3");
+          productName.textContent = element;
+    
+          let productPriceElement = document.createElement("p");
+          productPriceElement.textContent = `₹${priceList[todo.indexOf(element)]}`;
+    
+          // Edit button
+          let editButton = document.createElement("button");
+          editButton.className = "edit-button";
+          editButton.textContent = "Edit";
+          editButton.style.backgroundColor = "#FFA500"; // Yellow
+          editButton.style.color = "white";
+          editButton.style.padding = "8px 12px";
+          editButton.style.border = "none";
+          editButton.style.borderRadius = "5px";
+          editButton.style.cursor = "pointer";
+          editButton.style.margin = "5px";
+          editButton.onclick = () => {
+            name.value = element;
+            price.value = priceList[todo.indexOf(element)];
+            editIndex = todo.indexOf(element);
+          };
+    
+          // Delete button
+          let deleteButton = document.createElement("button");
+          deleteButton.className = "delete-button";
+          deleteButton.textContent = "Delete";
+          deleteButton.style.backgroundColor = "#FF4D4D"; // Red
+          deleteButton.style.color = "white";
+          deleteButton.style.padding = "8px 12px";
+          deleteButton.style.border = "none";
+          deleteButton.style.borderRadius = "5px";
+          deleteButton.style.cursor = "pointer";
+          deleteButton.style.margin = "5px";
+          deleteButton.onclick = () => {
+            let idx = todo.indexOf(element);
+            todo.splice(idx, 1);
+            priceList.splice(idx, 1);
+            imgList.splice(idx, 1);
+    
+            localStorage.setItem("name", JSON.stringify(todo));
+            localStorage.setItem("price", JSON.stringify(priceList));
+            localStorage.setItem("img", JSON.stringify(imgList));
+    
+            showdata();
+          };
+    
+          card.append(image, productName, productPriceElement, editButton, deleteButton);
+          container.appendChild(card);
+        });
+      }
+    
+      searchBar.addEventListener("input", (e) => {
+        showdata(e.target.value);
+      });
+    
+      lowButton.addEventListener("click", () => {
+        showdata(searchBar.value, "asc");
+      });
+    
+      highButton.addEventListener("click", () => {
+        showdata(searchBar.value, "desc");
+      });
+    
+      showdata();
+    </script>
+    
+  </body>
+</html>
