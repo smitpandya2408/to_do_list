@@ -12,10 +12,10 @@
       }
       @keyframes gradientAnimation {
   0% { background: linear-gradient(45deg, #b3e7a9, #d8cdca); }
-  25% { background: linear-gradient(45deg, #eca5a5, #a6c1ee); }
+  /* 25% { background: linear-gradient(45deg, #eca5a5, #a6c1ee); }
   50% { background: linear-gradient(45deg, #8fd3f4, #84fab0); }
   75% { background: linear-gradient(45deg, #a1c4fd, #c2e9fb); }
-  100% { background: linear-gradient(45deg, #93c4c1, #c9ec49); }
+  100% { background: linear-gradient(45deg, #93c4c1, #c9ec49); } */
 }
 
 body {
@@ -318,7 +318,7 @@ body {
       let searchBar = document.querySelector(".search-bar input");
       let lowButton = document.getElementById("low");
       let highButton = document.getElementById("high");
-      let editIndex = -1; // To track the index of the item being edited
+      let editIndex = -1; 
     
       btn.addEventListener("click", () => {
         if (name.value === "" || price.value === "" || (!img.files[0] && editIndex === -1)) {
@@ -329,12 +329,12 @@ body {
         const reader = new FileReader();
         reader.onload = () => {
           if (editIndex === -1) {
-            // Adding new product
+          
             todo.push(name.value);
             priceList.push(price.value);
             imgList.push(reader.result);
           } else {
-            // Editing existing product
+           
             todo[editIndex] = name.value;
             priceList[editIndex] = price.value;
             if (img.files[0]) imgList[editIndex] = reader.result;
@@ -405,7 +405,7 @@ body {
             editIndex = todo.indexOf(element);
           };
     
-          // Delete button
+        
           let deleteButton = document.createElement("button");
           deleteButton.className = "delete-button";
           deleteButton.textContent = "Delete";
